@@ -117,6 +117,31 @@ class BinaryTreeNode:
 
         return elements
     
+    def delete(self, value):
+        if value < self.data:
+            if self.left:
+                self.left = self.left.delete(value)
+        elif value > self.data:
+            if self.right:
+                self.right = self.right.delete(value)
+        else:
+            # Caso o nó a ser deletado tenha 0 ou 1 filho
+            if self.left is None:
+                return self.right
+            if self.right is None:
+                return self.left
+            
+            # Caso o nó a ser deletado tenha 2 filhos
+            # Substitui o nó pelo menor valor da subárvore direita
+            min_val = self.right.min()
+            self.data = min_val
+            # Deleta o nó que tinha o menor valor na subárvore direita
+            self.right = self.right.delete(min_val)
+            
+        return self
+
+            
+    
 
 def build_tree(elements):
     root = BinaryTreeNode(elements[0])
@@ -134,3 +159,5 @@ if __name__ == '__main__':
     print(f'Pre_Order: {numbers_tree.pre_order_traversal()}')
     print(f'Valor mínimo: {numbers_tree.min()}')
     print(f'Valor máximo: {numbers_tree.max()}')
+    numbers_tree.delete(9)
+    print(f'In_Order: {numbers_tree.in_order_traversal()}')
